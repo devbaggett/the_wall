@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title>The Wall</title>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="header">
+      
+      <h2 style="display: inline-block;">CodingDojo Wall</h2>
+      <p style="display: inline-block; margin-left: 700px;">Welcome {{ session['first_name'] }}</p>
+      <a href="/logoff" style="display: inline-block; margin-left: 50px;"">Log Off</a>
+    </div>
+    <hr>
+    </div>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+    <div>
+      <h3>Post a message:</h3>
+      <form action='/post_message' method="POST">
+        <textarea name="post_message" style="height: 100px; width: 1000px; display: block; padding: 10px; resize: none; box-sizing: border-box; overflow-y: scroll;"></textarea>
+        <input type="submit" value="Post a message" style="margin-top: 10px;margin-left: 900px;">
+      </form>
+    </div>
+
+    {% for message in messages: %}
+    <div>
+      <p style="margin-left: 40px"><b>{{ message['first_name'] }} {{ message['last_name'] }} - {{ message['date'] }}</b></p>
+      <p style="margin-left: 80px;">{{ message['content'] }}</p><br>
+      <form action="/delete_message/{{ message['users_id'] }}/{{ message['id'] }}" method="POST">
+        <input type="submit" value="Delete Message" name="delete_message" style="margin-left: 80px;">
+      </form>
+    </div>
+
+      {% for comment in comments: %}
+        {% if comment['messages_id'] == message['id']: %}
+    <div>
+      <p style="margin-left: 80px"><b>{{ comment['first_name'] }} {{ comment['last_name'] }} - {{ comment['date'] }}</b></p>
+      <p style="margin-left: 120px;">{{ comment['content'] }}</p><br>
+    </div>
+        {% endif %}
+      {% endfor %}
+
+    <div style="margin-left: 80px;">
+      <h3>Comment:</h3>
+      <form action="/comment/{{ message['id'] }}" method="POST">
+        <textarea name="comment" style="height: 60px; width: 920px; display: block; padding: 10px; resize: none; box-sizing: border-box; overflow-y: scroll;"></textarea>
+        <input type="submit" value="Comment" style="margin-top: 10px;margin-left: 853px;">
+      </form>
+    </div>
+    <hr>
+   
+    {% endfor %}
+    
+        
+
+  </div>
+
+</body>
+</html>
